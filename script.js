@@ -7,8 +7,13 @@ document.addEventListener("DOMContentLoaded", function() {
     let currentMonth = new Date().getMonth();
     let currentYear = new Date().getFullYear();
     let darkMode = true;
+    const holidays = { // Example holidays
+        '1-1': 'New Year\'s Day',
+        '12-25': 'Christmas Day'
+    };
 
     function renderCalendar() {
+        const today = new Date();
         const firstDay = new Date(currentYear, currentMonth, 1).getDay();
         const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
         const daysInPrevMonth = new Date(currentYear, currentMonth, 0).getDate();
@@ -28,6 +33,19 @@ document.addEventListener("DOMContentLoaded", function() {
         for (let i = 1; i <= daysInMonth; i++) {
             const day = document.createElement('div');
             day.textContent = i;
+
+            // Indicate today's date
+            if (currentYear === today.getFullYear() && currentMonth === today.getMonth() && i === today.getDate()) {
+                day.classList.add('today');
+            }
+
+            // Indicate holidays
+            const holidayKey = `${currentMonth + 1}-${i}`;
+            if (holidays[holidayKey]) {
+                day.classList.add('holiday');
+                day.title = holidays[holidayKey];
+            }
+
             calendarDays.appendChild(day);
         }
 
